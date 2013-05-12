@@ -11,10 +11,10 @@ describe 'YourCtrl', ->
 			ctrl = $controller 'YourCtrl',$scope: scope
 		names = scope.names
 	
-	describe '#inc', ->
-		it 'should be inc num.', ->
-			scope.inc.set(100)
-			expect(scope.inc.get()).toBe 100
+	describe '#myStorage', ->
+		it 'set/getで読み書きできる', ->
+			scope.myStorage.set(100)
+			expect(scope.myStorage.get()).toBe 100
 	
 
 	describe '#names', ->
@@ -36,10 +36,10 @@ describe 'MyCtrl', ->
 		calender = scope.calender
 
 
-	describe '#inc', ->
+	describe '#myStorage', ->
 	
-		it 'should be 3?', ->
-			expect(scope.inc.get()).toBe 100
+		it 'yourAppでセットした内容を読み取れる。', ->
+			expect(scope.myStorage.get()).toBe 100
 
 
 	describe '#calender', ->

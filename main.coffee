@@ -1,7 +1,7 @@
 
 myApp = angular.module 'MyApp', ['YourApp']
 
-myApp.controller 'MyCtrl', ['$scope', 'inc', ($scope, inc) ->
+myApp.controller 'MyCtrl', ['$scope', 'myStorage', ($scope, myStorage) ->
 
 	$scope.fizzbuzz = (n) ->
 		f = (m,s) -> if n % m then "" else s
@@ -16,19 +16,20 @@ myApp.controller 'MyCtrl', ['$scope', 'inc', ($scope, inc) ->
 		[1,1,1,1,1,1,1]
 	]
 
-	$scope.inc = inc
+	$scope.myStorage = myStorage
 ]
 
 yourApp = angular.module 'YourApp', []
 
-yourApp.controller 'YourCtrl', ['$scope', 'inc', ($scope, inc) ->
+yourApp.controller 'YourCtrl', ['$scope', 'myStorage', ($scope, myStorage) ->
 
 	$scope.names = ["富士通","IBM","NTTD"]
-	$scope.inc = inc	
+	$scope.myStorage = myStorage	
 ]
 
+
 count = 0
-yourApp.factory 'inc', ->
+yourApp.factory 'myStorage', ->
 	class Hoge
 		set: (n) -> count = n
 		get: -> count
