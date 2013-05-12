@@ -1,5 +1,6 @@
 src_files:
 - 'angular.js'
 - 'angular-mocks.js'
+- 'underscore.js'
 - 'main.js'
 - 'test.js'
