@@ -32,35 +32,29 @@
       });
     });
     describe('#find', function() {
-      it('条件に合致するものを１件選択する（配列）', function() {
-        return expect(_.find([2, 5, 8, 42, 12], function(e) {
+      return it('条件に合致するものを１件選択する', function() {
+        expect(_.find([2, 5, 8, 42, 12], function(e) {
           return e > 5;
         })).toBe(8);
-      });
-      return it('条件に合致するものを１件選択する（オブジェクト）', function() {
         return expect(_.find([alice, bob, chris], function(e) {
           return e.age === 17;
         })).toBe(alice);
       });
     });
     describe('#filter', function() {
-      it('条件に合致するものをすべて選択する（配列）', function() {
-        return expect(_.filter([2, 5, 8, 42, 12], function(e) {
+      return it('条件に合致するものをすべて選択する', function() {
+        expect(_.filter([2, 5, 8, 42, 12], function(e) {
           return e > 5;
         })).toEqual([8, 42, 12]);
-      });
-      return it('条件に合致するものをすべて選択する（オブジェクト）', function() {
         return expect(_.filter([alice, bob, chris], function(e) {
           return e.age === 18;
         })).toEqual([bob, chris]);
       });
     });
     describe('#contains', function() {
-      it('条件に合致するものの有無を調べる（配列）', function() {
+      return it('条件に合致するものの有無を調べる', function() {
         expect(_.contains([2, 5, 8, 42, 12], 5)).toBe(true);
-        return expect(_.contains([2, 5, 8, 42, 12], 7)).toBe(false);
-      });
-      return it('条件に合致するもの有無を調べる（オブジェクト）', function() {
+        expect(_.contains([2, 5, 8, 42, 12], 7)).toBe(false);
         expect(_.contains([alice, bob, chris], bob)).toBe(true);
         return expect(_.contains([alice, bob, chris], bob_dash)).toBe(false);
       });

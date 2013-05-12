@@ -16,25 +16,19 @@ describe 'underscore.js', ->
 			expect(_.map [1,2,3], (e) -> e*2).toEqual [2,4,6]
 
 	describe '#find', ->
-		it '条件に合致するものを１件選択する（配列）', ->
+		it '条件に合致するものを１件選択する', ->
 			expect(_.find [2,5,8,42,12], (e) -> e > 5).toBe 8
-
-		it '条件に合致するものを１件選択する（オブジェクト）', ->
 			expect(_.find [alice,bob,chris], (e) -> e.age is 17).toBe alice
 
 	describe '#filter', ->
-		it '条件に合致するものをすべて選択する（配列）', ->
+		it '条件に合致するものをすべて選択する', ->
 			expect(_.filter [2,5,8,42,12], (e) -> e > 5).toEqual [8,42,12]
-
-		it '条件に合致するものをすべて選択する（オブジェクト）', ->
 			expect(_.filter [alice,bob,chris], (e) -> e.age is 18).toEqual [bob,chris]
 
 	describe '#contains', ->
-		it '条件に合致するものの有無を調べる（配列）', ->
+		it '条件に合致するものの有無を調べる', ->
 			expect(_.contains [2,5,8,42,12], 5).toBe true
 			expect(_.contains [2,5,8,42,12], 7).toBe false
-
-		it '条件に合致するもの有無を調べる（オブジェクト）', ->
 			expect(_.contains [alice,bob,chris], bob).toBe true
 			expect(_.contains [alice,bob,chris], bob_dash).toBe false
 
