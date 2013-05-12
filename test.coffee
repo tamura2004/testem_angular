@@ -1,11 +1,92 @@
 # test angular controller by testem.
 
-describe 'underscore.js', ->
+alice = {name:"alice", age:17}
+bob =  {name:"bob", age:18}
+bob_dash =  {name:"bob", age:18}
+chris = {name:"chris", age:18}
 
-	alice = {name:"alice", age:17}
-	bob =  {name:"bob", age:18}
-	bob_dash =  {name:"bob", age:18}
-	chris = {name:"chris", age:18}
+# chrome組み込みのSQlite
+describe 'web sql database', ->
+
+	db = null
+
+	describe '#openDatabase', ->
+		it 'daoを取得できる', ->
+			waitsFor ->
+				db = openDatabase "testDB", "", "Test Database", 1000
+			,
+				"db作成", 3000
+
+			runs ->
+				expect(typeof db).toBe "object"
+				expect(typeof db.transaction).toBe "function"
+	
+	describe '#drop', ->
+		it 'テーブルドロップ可能', ->
+			result = null
+			spyF = jasmine.createSpy()
+			
+			db.transaction (tr) ->
+				tr.executeSql "drop table if exists test", [], (-> result = true), spyF
+
+			waitsFor (-> result), 'droptableが結果を返すまで5秒待つ', 5000
+
+			runs ->	
+				expect(result).toBe true
+				expect(spyF).not.toHaveBeenCalled()
+	
+	describe '#create', ->
+		it 'テーブル作成可能', ->
+			result = null
+			spyF = jasmine.createSpy()
+			
+			db.transaction (tr) ->
+				tr.executeSql "create table test (name, age)", [], (-> result = true), spyF
+
+			waitsFor (-> result), 'createtableが結果を返すまで5秒待つ', 5000
+
+			runs ->	
+				expect(result).toBe true
+				expect(spyF).not.toHaveBeenCalled()
+	
+	describe '#insert', ->
+		it 'レコード挿入可能', ->
+			result_a = null
+			result_b = null
+			result_c = null
+			spyF = jasmine.createSpy()
+			
+			db.transaction (tr) ->
+				tr.executeSql "insert into test values (?, ?)", [alice.name, alice.age], (-> result_a = true), spyF
+				tr.executeSql "insert into test values (?, ?)", [bob.name, bob.age], (-> result_b = true), spyF
+				tr.executeSql "insert into test values (?, ?)", [chris.name, chris.age], (-> result_c = true), spyF
+
+			waitsFor (-> result_a and result_b and result_c), '挿入がすべて完了するまで5秒待つ', 5000
+
+			runs ->	
+				expect(result_a).toBe true
+				expect(result_b).toBe true
+				expect(result_c).toBe true
+				expect(spyF).not.toHaveBeenCalled()
+	
+	describe '#select', ->
+		it '条件に合うレコードを取得できる', ->
+			result = null
+			rows = []
+			spyF = jasmine.createSpy()
+
+			db.transaction (tr) ->
+				tr.executeSql "select * from test", [], ((rt, rs) -> result = true; rows = rs.rows), spyF
+
+			waitsFor (-> result), 'selectが結果を返すまで5秒待つ', 5000
+
+			runs ->
+				expect(_.map [1..rows.length], (i) -> rows.item(i-1).name).toEqual ["alice","bob","chris"]
+				expect(_.map [1..rows.length], (i) -> rows.item(i-1).age).toEqual [17,18,18]
+				expect(spyF).not.toHaveBeenCalled()
+	
+# ライブラリ
+describe 'underscore.js', ->
 
 	describe '_', ->
 		it '_ が関数として定義されている', ->
@@ -146,21 +227,8 @@ describe 'underscore.js', ->
 	describe '#template', ->
 		it 'テンプレート機能', ->
 			expect(_.template "name:<%- name %> <%- 2 * 2 %>", bob).toBe "name:bob 4"
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-		
-				
-	
 
+# angular.jsのコントローラー
 describe 'YourCtrl', ->
 	scope = null
 	names = null
@@ -208,7 +276,7 @@ describe 'MyCtrl', ->
 		it 'should be array of 6 x 7', ->
 			expect(calender.length).toBe 6
 			expect(calender[0].length).toBe 7
-	
+
 
 	describe '#fizzbuzz', ->
 
